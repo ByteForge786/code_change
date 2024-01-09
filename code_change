@@ -1,0 +1,18 @@
+import csv
+import json
+
+def csv_to_jsonl(csv_file, jsonl_file):
+    with open(csv_file, 'r', newline='', encoding='utf-8') as csv_input:
+        # Assuming the CSV file has a header row
+        csv_reader = csv.DictReader(csv_input)
+        
+        with open(jsonl_file, 'w', encoding='utf-8') as jsonl_output:
+            for row in csv_reader:
+                # Convert each row to a JSON object and write it to the JSONL file
+                jsonl_output.write(json.dumps(row, ensure_ascii=False) + '\n')
+
+# Example usage:
+csv_file_path = 'example.csv'
+jsonl_file_path = 'example.jsonl'
+
+csv_to_jsonl(csv_file_path, jsonl_file_path)
