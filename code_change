@@ -16,3 +16,34 @@ csv_file_path = 'example.csv'
 jsonl_file_path = 'example.jsonl'
 
 csv_to_jsonl(csv_file_path, jsonl_file_path)
+==============================================================================================================
+
+import csv
+import json
+
+def csv_to_json(csv_file, json_file):
+    data = []
+    with open(csv_file, 'r', newline='', encoding='utf-8') as csv_input:
+        csv_reader = csv.DictReader(csv_input)
+        for row in csv_reader:
+            data.append(row)
+
+    with open(json_file, 'w', encoding='utf-8') as json_output:
+        json.dump(data, json_output, ensure_ascii=False, indent=2)
+
+def json_to_jsonl(json_file, jsonl_file):
+    with open(json_file, 'r', encoding='utf-8') as json_input, open(jsonl_file, 'w', encoding='utf-8') as jsonl_output:
+        data = json.load(json_input)
+        for item in data:
+            jsonl_output.write(json.dumps(item, ensure_ascii=False) + '\n')
+
+# Example usage:
+csv_file_path = 'example.csv'
+json_file_path = 'example.json'
+jsonl_file_path = 'example.jsonl'
+
+# Convert CSV to JSON
+csv_to_json(csv_file_path, json_file_path)
+
+# Convert JSON to JSONL
+json_to_jsonl(json_file_path, jsonl_file_path)
