@@ -24,3 +24,4 @@ def analyze_data(df: pd.DataFrame) -> str:
     3. Analyze: Conducting the actual analysis. use column names and its values from provided df strictly.
     4. Output: Returning the answer as a string
     """
+```
