@@ -1,85 +1,26 @@
+You are provided with a following pandas dataframe (`df`):
+
+Dataframe Name: score sheet, with 3 rows and 3 columns.
+Description: score sheet of class 1
+Columns: name, score, gender
+Here are the descriptions of the columns of the dataframe:
+{"Column Name": "gender", "Type": "string", "Enumerated Values": ["boy", "girl"], "Contain NaN": False}
+{"Column Name": "name", "Type": "string", "Enumerated Values": ["Mike", "Tony", "Sally"], "Contain NaN": False}
+{"Column Name": "score", "Type": "int", "MIN": 97, "MAX": 99, "Contain NaN": False}
+
+Using the provided dataframe (`df`), update the following python code and complete the function (analyze_data) that returns the answer to question: "Who is the boy with the highest score?"
+
+This is the initial python code to be updated:
+```python
+# TODO import all the dependencies required
 import pandas as pd
-from torch.utils.data import Dataset
-from transformers import AutoTokenizer
-import torch
-import copy
+import numpy as np
 
-# Assuming you have a local CSV file named 'dataset.csv'
-csv_file_path = 'dataset.csv'
-
-# Load CSV file using pandas
-df = pd.read_csv(csv_file_path, usecols=['1', '2'])
-
-# Initialize the tokenizer
-tokenizer = AutoTokenizer.from_pretrained("t5-small")
-
-class NSText2SQLDataset(Dataset):
-    def __init__(self, dataframe, size=None, max_seq_length=2048):
-        if size:
-            dataframe = dataframe.head(size)
-        self.dataset = dataframe
-        self.max_seq_length = max_seq_length
-
-    def __len__(self):
-        return len(self.dataset)
-
-    def __getitem__(self, index):
-        instruction = torch.tensor(tokenizer.encode(self.dataset.iloc[index]['1']), dtype=torch.int64)
-        example = self.dataset.iloc[index]['1'] + self.dataset.iloc[index]['2']
-        example = tokenizer.encode(example, add_special_tokens=True)
-        example = torch.tensor(example, dtype=torch.int64)
-
-        padding = self.max_seq_length - len(example)
-
-        if padding < 0:
-            example = example[:self.max_seq_length]
-        else:
-            example = torch.cat((example, torch.zeros(padding, dtype=torch.int64)))
-            
-        labels = copy.deepcopy(example)
-        labels[: len(instruction)] = -100
-        
-        return {"input_ids": example, "labels": labels}
-
-# Create dataset from the local CSV file
-dataset = NSText2SQLDataset(dataframe=df)
-
-# Check the content of the first few samples
-for i in range(min(5, len(dataset))):
-    sample = dataset[i]
-    print(f"Sample {i + 1}:")
-    print("Input IDs:", sample['input_ids'])
-    print("Labels:", sample['labels'])
-    print("----")
-
-==============================================================================================================
-
-import csv
-import json
-
-def csv_to_json(csv_file, json_file):
-    data = []
-    with open(csv_file, 'r', newline='', encoding='utf-8') as csv_input:
-        csv_reader = csv.DictReader(csv_input)
-        for row in csv_reader:
-            data.append(row)
-
-    with open(json_file, 'w', encoding='utf-8') as json_output:
-        json.dump(data, json_output, ensure_ascii=False, indent=2)
-
-def json_to_jsonl(json_file, jsonl_file):
-    with open(json_file, 'r', encoding='utf-8') as json_input, open(jsonl_file, 'w', encoding='utf-8') as jsonl_output:
-        data = json.load(json_input)
-        for item in data:
-            jsonl_output.write(json.dumps(item, ensure_ascii=False) + '\n')
-
-# Example usage:
-csv_file_path = 'example.csv'
-json_file_path = 'example.json'
-jsonl_file_path = 'example.jsonl'
-
-# Convert CSV to JSON
-csv_to_json(csv_file_path, json_file_path)
-
-# Convert JSON to JSONL
-json_to_jsonl(json_file_path, jsonl_file_path)
+def analyze_data(df: pd.DataFrame) -> str:
+    """
+    Analyze the data and return the answer of question: "Who is the boy with the highest score?"
+    1. Prepare: Preprocessing and cleaning data if necessary
+    2. Process: Manipulating data for analysis (grouping, filtering, aggregating, etc.). use column names and its values from provided df strictly.
+    3. Analyze: Conducting the actual analysis. use column names and its values from provided df strictly.
+    4. Output: Returning the answer as a string
+    """
