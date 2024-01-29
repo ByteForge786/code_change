@@ -1,72 +1,39 @@
-import transformers
-import time
-
-from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
-
-tokenizer = AutoTokenizer.from_pretrained("SagarKrishna/data_analysis")
-model = AutoModelForCausalLM.from_pretrained("SagarKrishna/data_analysis")
-
-
-def build_instruction_prompt(instruction):
-    return f"""
-    Below is an instruction that describes a task. Write a response that appropriately completes the request.
-    ### Instruction:
-    You are provided with a following pandas dataframe (`df`):
-
-    Dataframe Name: CancerDeath, with 2431 rows and 7 columns.
-    Columns: Unnamed: 0, Year, Nationality, Gender, Cancer site, Death Count, age
-    Here are the descriptions of the columns of the dataframe:
-    {{"Column Name": "Unnamed: 0", "Type": "int", "MIN": 1, "MAX": 2430, "Contain NaN": True}}
-    {{"Column Name": "Nationality", "Type": "string", "Enumerated Values": ["National", "Expatriate"], "Contain NaN": True}}
-    {{"Column Name": "Cancer site", "Type": "string", "Enumerated Values": ["Ovary", "Hypopharynx", "Oesophagus", "Other And Unspecified
-    Types Of Non-Hodgkin'S Lymphoma", "Trachea, bronchus and lung", "Prostate", "Gallbladder and extrahepatic ducts", "Piriform Sinus"], "Contain NaN": False}}
-    {{"Column Name": "age", "Type": "int", "MIN": 5, "MAX": 85, "Contain NaN": True}}
-    {{"Column Name": "Year", "Type": "int", "MIN": 2011, "MAX": 2018, "Contain NaN": False}}
-    {{"Column Name": "Gender", "Type": "string", "Enumerated Values": ["Female", "Male"], "Contain NaN": True}}
-    {{"Column Name": "Death Count", "Type": "int", "MIN": 1, "MAX": 13, "Contain NaN": False}}
-
-    Using the provided dataframe (`df`), answer the following question
-
-    {instruction}
-
-
-    ### Response:
-"""
-
-
-start_time = time.time()
-pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, max_length=1024, top_p=0.95)
-result = pipe(build_instruction_prompt("summarise the percent changes happened in death count between 2015 to 2017"))
-print(result[0]['generated_text'])
-print("--- %s seconds ---" % (time.time() - start_time))
-
-
-
 import pandas as pd
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
 
-# Creating a DataFrame with some duplicate rows
-import pandas as pd
+# Load your CSV file into a DataFrame
+df = pd.read_csv('input_data.csv')
 
-data = {
-    'Unnamed: 0': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    'Year': [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2018, 2019],
-    'Nationality': ['National', 'Expatriate', 'National', 'Expatriate', 'National', 'Expatriate', 'National', 'Expatriate', 'National', 'Expatriate'],
-    'Gender': ['Male', 'Female', 'Male', 'Female', 'Male', 'Female', 'Male', 'Female', 'Male', 'Female'],
-    'Cancer site': ['Ovary', 'Hypopharynx', 'Oesophagus', 'Ovary', 'Hypopharynx', 'Oesophagus', 'Ovary', 'Hypopharynx', 'Oesophagus', 'Ovary'],
-    'Death Count': [3, 2, 3, 10, 5, 62, 17, 21, 20, 10],
-    'age': [30, 35, 40, 45, 50, 55, 60, 65, 70, 75],
-}
+# Display the first few rows to check the data
+print(df.head())
 
-df = pd.DataFrame(data)
-# Calculate the average and total death count for each year
-# Filter the dataframe to only include the rows where the year is between 2015 and 2017
-df_2015_to_2017 = df[df['Year'].between(2015, 2017)]
+# Load pre-trained model and tokenizer
+model_name = "EleutherAI/gpt-neo-2.7B"
+tokenizer = GPT2Tokenizer.from_pretrained(model_name)
+model = GPT2LMHeadModel.from_pretrained(model_name)
 
-# Calculate the percent change in the death count for each year
-df_2015_to_2017['Percent Change'] = (df_2015_to_2017['Death Count'].pct_change() * 100).round(2)
+# Function to generate new questions with the same output
+def generate_augmented_data(row):
+    original_question = row['Question']
+    output_label = row['Output']
 
-# Sum up the percent changes for each year to get the total percent change
-total_percent_change = df_2015_to_2017['Percent Change'].sum()
+    inputs = tokenizer.encode(original_question, return_tensors="pt", max_length=512, truncation=True)
+    outputs = model.generate(inputs, max_length=100, num_return_sequences=4, no_repeat_ngram_size=2, top_k=50, top_p=0.95, temperature=0.7)
 
-print(f"The total percent change in death count between 2015 and 2017 is {total_percent_change}%")
+    augmented_data = []
+    for output in outputs:
+        generated_question = tokenizer.decode(output, skip_special_tokens=True)
+        augmented_data.append({'Question': generated_question, 'Output': output_label})
 
+    return augmented_data
+
+# Iterate through each row, generate new questions, and append to the DataFrame
+augmented_rows = []
+for index, row in df.iterrows():
+    augmented_rows.extend(generate_augmented_data(row))
+
+# Create a new DataFrame with augmented data
+augmented_df = pd.DataFrame(augmented_rows)
+
+# Save the augmented DataFrame to a new CSV file
+augmented_df.to_csv('augmented_data.csv', index=False)
