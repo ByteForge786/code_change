@@ -123,4 +123,63 @@ Certainly! Here are four similar questions for each of the provided questions:
    - Retrieve details on the dataset and rule where the rule name is "BBD_missing_on_obligor."
    - Can you share information about the dataset and rule corresponding to the rule named "BBD_missing_on_obligor"?
 
+1) Display results related to the rule_name "city_match."
+   - Show me the results associated with the rule_name "city_match."
+   - Provide information on results related to the rule_name "city_match."
+   - What are the outcomes for the rule_name "city_match"?
+   - Can you display results related to the rule_name "city_match"?
+
+2) Show rule ids for dataset 4785.
+   - Display the rule ids associated with dataset 4785.
+   - Provide rule ids linked to dataset 4785.
+   - What are the rule ids for the dataset with ID 4785?
+   - Show me the rules connected to dataset 4785.
+
+3) Provide rule id for dataset "city_match."
+   - Can you give me the rule id for the dataset named "city_match"?
+   - Share the rule id associated with the dataset "city_match."
+   - What is the rule id for the dataset with the name "city_match"?
+   - Retrieve the rule id for the dataset named "city_match."
+
+4) Share rules that are inline.
+   - Display rules that are marked as inline.
+   - Provide information on rules classified as inline.
+   - What are the rules categorized as inline?
+   - Show me the inline rules in the system.
+
+5) Show exceptions for rule id 800125.
+   - Display exceptions related to rule id 800125.
+   - Provide information on exceptions for rule id 800125.
+   - What are the exceptions associated with rule id 800125?
+   - Show me the exceptions linked to rule id 800125.
+
+6) Show teams for rule id 4000145.
+   - Display the teams associated with rule id 4000145.
+   - Provide information on the teams linked to rule id 4000145.
+   - What teams are assigned to rule id 4000145?
+   - Show me the teams for rule id 4000145.
+
+7) What are the exceptions for UDM_EOD owner?
+   - Provide information on exceptions for the owner "UDM_EOD."
+   - Show exceptions associated with the owner "UDM_EOD."
+   - Retrieve exceptions for the owner "UDM_EOD."
+   - Display exceptions for the specified owner "UDM_EOD."
+
+8) Give exceptions that are unassigned.
+   - Display unassigned exceptions.
+   - Provide exceptions that are not assigned.
+   - What are the unassigned exceptions in the system?
+   - Show me exceptions that are currently unassigned.
+
+9) Retrieve the details of exceptions with an age greater than 90 days.
+   - Provide details of exceptions with an age exceeding 90 days.
+   - Show exceptions that have been active for more than 90 days.
+   - What are the details of exceptions with an age greater than 90 days?
+   - Display exceptions that have surpassed the 90-day age threshold.
+
+10) What are the exceptions for rule id 400123 that are assigned?
+    - Provide assigned exceptions for rule id 400123.
+    - Display exceptions linked to rule id 400123 that are currently assigned.
+    - What exceptions are assigned to rule id 400123?
+    - Show me the assigned exceptions for rule id 400123.
 
