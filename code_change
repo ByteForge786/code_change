@@ -1,23 +1,31 @@
-import pandas as pd
+Certainly! Here are four similar questions for each of the provided questions:
 
-# Load the CSV file into a pandas DataFrame
-file_path = 'your_file.csv'  # Replace with the actual file path
-df = pd.read_csv(file_path)
+1) **Give me dataset details for dataset ID 2246:**
+   - What information can you share about the dataset with ID 2246?
+   - Tell me more details about the dataset having the ID 2246.
+   - Can you provide specifics about the dataset identified by the number 2246?
+   - What details do you have on the dataset labeled as 2246?
 
-# Create a DataFrame for synthetic data
-synthetic_df = pd.DataFrame(columns=['instruction', 'output'])
+2) **Provide dataset name associated with dataset ID 2243:**
+   - What is the name of the dataset linked to the ID 2243?
+   - Can you share the dataset name corresponding to dataset ID 2243?
+   - What is the specific dataset name associated with ID 2243?
+   - Tell me the name of the dataset connected to the ID 2243.
 
-# Iterate through each row in the original DataFrame
-for _, row in df.iterrows():
-    # Copy the 'output' value
-    output_value = row['output']
+3) **Show me the query for dataset ID 2265:**
+   - What is the query associated with dataset ID 2265?
+   - Can you display the query used for dataset ID 2265?
+   - Show me the specific query for the dataset ID 2265.
+   - Provide the query details for the dataset with ID 2265.
 
-    # Append the original row to synthetic DataFrame
-    synthetic_df = synthetic_df.append(row, ignore_index=True)
+4) **Provide the total number of datasets for the trade concept:**
+   - How many datasets are there related to the trade concept?
+   - Can you share the total count of datasets associated with the trade concept?
+   - Provide the overall number of datasets connected to the trade concept.
+   - Tell me the total count of datasets for the trade concept.
 
-    # Generate four synthetic rows with empty 'instruction' column
-    for _ in range(4):
-        synthetic_df = synthetic_df.append({'instruction': '', 'output': output_value}, ignore_index=True)
-
-# Save the synthetic data to a new CSV file
-synthetic_df.to_csv('synthetic_data.csv', index=False)
+5) **Display information about dataset details for RDMC owner:**
+   - What details can you provide about datasets owned by RDMC?
+   - Display information about datasets associated with the owner RDMC.
+   - Can you share details about the datasets owned by RDMC?
+   - Tell me more about the dataset details for the owner RDMC.
