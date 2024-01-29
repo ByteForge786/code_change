@@ -183,3 +183,155 @@ Certainly! Here are four similar questions for each of the provided questions:
     - What exceptions are assigned to rule id 400123?
     - Show me the assigned exceptions for rule id 400123.
 
+1) Generate the list of exceptions that are unassigned.
+   - Provide exceptions that do not have an assigned owner.
+   - What exceptions are currently unassigned?
+   - Show me the list of exceptions without assigned owners.
+   - Can you generate a list of unassigned exceptions?
+
+2) Identify the category for exception_id 'sensitivity_region|300101|1000121-US.'
+   - What is the category associated with the exception_id 'sensitivity_region|300101|1000121-US'?
+   - Provide information about the category for the specified exception_id 'sensitivity_region|300101|1000121-US.'.
+   - Can you share the category linked to exception_id 'sensitivity_region|300101|1000121-US'?
+   - Retrieve the category for the given exception_id 'sensitivity_region|300101|1000121-US.'.
+
+3) List exceptions whose category is neither deadlock nor false positive.
+   - Provide exceptions excluding those with the categories deadlock or false positive.
+   - What are the exceptions that have categories other than deadlock or false positive?
+   - Show exceptions with categories not equal to deadlock or false positive.
+   - Can you display exceptions with categories different from deadlock or false positive?
+
+4) Display exceptions that have the category 'To be Investigated.'
+   - Show exceptions categorized as 'To be Investigated.'
+   - Provide information on exceptions with the category 'To be Investigated.'
+   - What exceptions fall under the category 'To be Investigated'?
+   - Share the list of exceptions labeled 'To be Investigated.'
+
+5) Provide a list of comments for rule id 800152.
+   - What are the comments associated with rule id 800152?
+   - Display comments for the rule with id 800152.
+   - Can you share the list of comments related to rule id 800152?
+   - Retrieve the comments for rule id 800152.
+
+6) Show the total number of exceptions with the category 'book' and age below 50.
+   - How many exceptions have the category 'book' and an age below 50?
+   - Provide the count of exceptions with the category 'book' and age less than 50.
+   - Display the total number of exceptions categorized as 'book' with an age below 50.
+   - Can you share the count of exceptions with the category 'book' and age below 50?
+
+7) Identify the rules that are part of the RISK concept.
+   - What rules belong to the RISK concept?
+   - Display rules associated with the RISK concept.
+   - Can you list the rules that fall under the RISK concept?
+   - Provide information on rules within the RISK concept.
+
+8) Display category and sub-category for exception id 'sensitivity_region|300101|1000121-US.'
+   - What is the category and sub-category for the exception id 'sensitivity_region|300101|1000121-US'?
+   - Share information about the category and sub-category linked to the specified exception id 'sensitivity_region|300101|1000121-US.'.
+   - Provide details on the category and sub-category for the given exception id 'sensitivity_region|300101|1000121-US.'.
+   - Retrieve the category and sub-category for exception id 'sensitivity_region|300101|1000121-US.'
+
+9) Share the list of exceptions with an age greater than 60.
+   - Provide exceptions with an age exceeding 60.
+   - What are the exceptions with an age greater than 60?
+   - Show the list of exceptions that have an age surpassing 60.
+   - Can you display exceptions with an age greater than 60?
+
+10) Provide the count of exceptions in an open state.
+    - How many exceptions are currently in an open state?
+    - Share the count of exceptions with an open status.
+    - What is the total number of exceptions in an open state?
+    - Display the count of exceptions that are currently open.
+
+11) What is the total count of exceptions labeled 'to be investigated'?
+    - Provide the total count of exceptions with the label 'to be investigated.'
+    - Share the count of exceptions categorized as 'to be investigated.'
+    - How many exceptions fall under the label 'to be investigated'?
+    - Display the total number of exceptions marked as 'to be investigated.'
+
+12) How many exceptions are available between 2023-01-02 to 2023-01-31?
+    - Provide the count of exceptions recorded between January 2, 2023, and January 31, 2023.
+    - What is the total number of exceptions within the date range of January 2, 2023, to January 31, 2023?
+    - Share the count of exceptions recorded during the period from January 2, 2023, to January 31, 2023.
+    - Display the number of exceptions between January 2, 2023, and January 31, 2023.
+
+13) Display exceptions for rule id 300124 and 400125.
+    - Show exceptions related to rule ids 300124 and 400125.
+    - Provide information on exceptions for the specified rule ids 300124 and 400125.
+    - What are the exceptions associated with rule ids 300124 and 400125?
+    - Retrieve exceptions for rule ids 300124 and 400125.
+
+14) What is the age for rule id 400012?
+    - Provide the age of the rule with id 400012.
+    - What is the age of the rule identified by id 400012?
+    - Share the age associated with rule id 400012.
+    - Can you display the age for rule id 400012?
+
+15) Can you tell me the highest age among all exceptions?
+    - What is the highest age recorded among all exceptions?
+    - Provide information on the maximum age among all exceptions.
+    - Share the highest age observed in the system's exceptions.
+    - Can you display the highest age among all recorded exceptions?
+
+16) Can you tell me the maximum age and exception for rule id 400012?
+    - Provide the maximum age and exception details for rule id 400012.
+    - What is the maximum age and associated exception for rule id 400012?
+    - Share information on the maximum age and corresponding exception for rule id 400012.
+    - Display the maximum age and exception linked to rule id 400012.
+
+17) Give me the latest exception recorded.
+    - What is the most recent exception recorded in the system?
+    - Provide information on the latest exception in the database.
+    - Share the details of the most recently recorded exception.
+    - Can you display the latest exception captured?
+
+18) Display the age, exception, and rules where age has exceeded 100 days.
+    - Provide information on exceptions where the age has surpassed 100 days, along with associated rules.
+    - What are the exceptions, along with their age and rules, where the age has exceeded 100 days?
+    - Show the age, exception, and rules for cases where the age exceeds 100 days.
+    - Can you display the age, exception, and rules for instances with an age exceeding 100 days?
+
+19) Can you provide the count of exceptions for cobdate 2023-02-23?
+    - How many exceptions were recorded on the cobdate (close of business date) February 23, 2023?
+    - Provide the count of exceptions for the specified cobdate of February 23, 2023.
+    - What is the total number of exceptions on the cobdate 2023-02-23?
+    - Display the count of exceptions recorded on February 23
+
+, 2023.
+
+20) What is the category and sub-category for exceptions?
+    - Provide the category and sub-category information for all exceptions.
+    - Share the details of categories and sub-categories for exceptions in the system.
+    - What are the category and sub-category labels associated with exceptions?
+    - Display the category and sub-category information for all recorded exceptions.
+
+21) Can you identify exceptions that are not assigned to anyone?
+    - Provide exceptions that currently have no assigned owner.
+    - What exceptions in the system are not assigned to any owner?
+    - Show me exceptions without assigned owners.
+    - Retrieve exceptions that are currently unassigned to anyone.
+
+22) List exceptions that are not assigned to anyone for rule id 400121.
+    - Provide exceptions for rule id 400121 that are not assigned to any owner.
+    - What exceptions related to rule id 400121 are currently unassigned?
+    - Show exceptions for rule id 400121 without assigned owners.
+    - Can you list the exceptions without assigned owners for rule id 400121?
+
+23) What are the high priority exceptions?
+    - Provide information on exceptions categorized as high priority.
+    - What exceptions are marked as high priority in the system?
+    - Show me the list of exceptions with high priority.
+    - Can you display exceptions considered to be high priority?
+
+24) Show me the rule ids belonging to the RISK division and having the concept as Trade.
+    - Provide rule ids associated with the RISK division and having the concept as Trade.
+    - What rule ids belong to the RISK division with the concept as Trade?
+    - Display rule ids for rules within the RISK division and with the concept as Trade.
+    - Can you share the rule ids for rules in the RISK division with the concept as Trade?
+
+25) Show the provider for rule id 2000121.
+    - What is the provider associated with rule id 2000121?
+    - Provide information on the provider for rule id 2000121.
+    - Can you share the provider linked to rule id 2000121?
+    - Display the provider for rule id 2000121.
+
