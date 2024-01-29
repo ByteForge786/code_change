@@ -1,0 +1,26 @@
+import pandas as pd
+
+def append_questions_to_csv(questions_file, csv_path, column_name):
+    # Read the questions from the text file
+    with open(questions_file, 'r') as file:
+        questions = [line.strip() for line in file.readlines()]
+
+    # Read the existing CSV file
+    df = pd.read_csv(csv_path)
+
+    # Find the first empty cell in the specified column
+    first_empty_index = df[column_name].index[df[column_name].isna()].min()
+
+    # Append questions to the empty cells
+    if pd.notna(first_empty_index):
+        df.loc[first_empty_index:first_empty_index + len(questions) - 1, column_name] = questions
+
+    # Save the updated DataFrame to the CSV file
+    df.to_csv(csv_path, index=False)
+
+# Replace 'your_csv_file.csv' and 'instruction' with your actual CSV file and column name
+csv_file_path = 'your_csv_file.csv'
+column_to_append = 'instruction'
+questions_file_path = 'questions.txt'
+
+append_questions_to_csv(questions_file_path, csv_file_path, column_to_append)
