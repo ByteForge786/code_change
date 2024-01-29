@@ -8,12 +8,10 @@ def append_questions_to_csv(questions_file, csv_path, column_name):
     # Read the existing CSV file
     df = pd.read_csv(csv_path)
 
-    # Find the first empty cell in the specified column
-    first_empty_index = df[column_name].index[df[column_name].isna()].min()
-
-    # Append questions to the empty cells
-    if pd.notna(first_empty_index):
-        df.loc[first_empty_index:first_empty_index + len(questions) - 1, column_name] = questions
+    # Iterate through rows, check if 'instruction' column is empty, and append questions
+    for i in range(len(df)):
+        if pd.isna(df.at[i, column_name]):
+            df.at[i, column_name] = questions.pop(0) if questions else None
 
     # Save the updated DataFrame to the CSV file
     df.to_csv(csv_path, index=False)
