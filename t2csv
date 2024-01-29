@@ -1,0 +1,18 @@
+import csv
+
+# Read the questions from the text file
+with open('questions.txt', 'r') as file:
+    content = file.read()
+
+# Split the content into individual questions
+questions = [question.strip() for question in content.split('-') if question.strip()]
+
+# Write the questions to a CSV file
+with open('output.csv', 'w', newline='') as csvfile:
+    csv_writer = csv.writer(csvfile)
+    csv_writer.writerow(['Question'])  # Header
+
+    for question in questions:
+        csv_writer.writerow([question.strip()])
+
+print("Questions extracted and saved to 'output.csv'")
