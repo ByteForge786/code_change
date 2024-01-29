@@ -1,18 +1,18 @@
 import csv
 
-# Read the questions from the text file
+# Read the sentences from the text file
 with open('questions.txt', 'r') as file:
     content = file.read()
 
-# Split the content into individual questions
-questions = [question.strip() for question in content.split('-') if question.strip()]
+# Split the content into lines and filter sentences starting with "-"
+sentences = [sentence.strip() for sentence in content.split('\n') if sentence.strip().startswith('-')]
 
-# Write the questions to a CSV file
+# Write the sentences to a CSV file
 with open('output.csv', 'w', newline='') as csvfile:
     csv_writer = csv.writer(csvfile)
-    csv_writer.writerow(['Question'])  # Header
+    csv_writer.writerow(['Sentence'])  # Header
 
-    for question in questions:
-        csv_writer.writerow([question.strip()])
+    for sentence in sentences:
+        csv_writer.writerow([sentence.strip()])
 
-print("Questions extracted and saved to 'output.csv'")
+print("Sentences starting with '-' extracted and saved to 'output.csv'")
