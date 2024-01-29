@@ -1,23 +1,20 @@
-from transformers import T5Tokenizer, T5ForConditionalGeneration
+import pandas as pd
 
-# Load pre-trained model and tokenizer
-model_name = "t5-small"
-tokenizer = T5Tokenizer.from_pretrained(model_name)
-model = T5ForConditionalGeneration.from_pretrained(model_name)
+# Load the CSV file into a pandas DataFrame
+file_path = 'your_file.csv'  # Replace with the actual file path
+df = pd.read_csv(file_path)
 
-# Function to generate new questions
-def generate_questions(question):
-    input_text = f"question: {question} </s>"
-    inputs = tokenizer(input_text, return_tensors="pt")
-    outputs = model.generate(**inputs, max_length=100, num_beams=4, no_repeat_ngram_size=2, top_k=50, top_p=0.95, temperature=0.7)
-    generated_questions = [tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
-    return generated_questions
+# Create a new DataFrame to store the synthetic data
+synthetic_df = pd.DataFrame(columns=['instruction', 'output'])
 
-# Example usage
-original_question = "What is the capital of France?"
-generated_questions = generate_questions(original_question)
+# Iterate through each row in the original DataFrame
+for index, row in df.iterrows():
+    # Copy the 'output' value
+    output_value = row['output']
 
-print("Original Question:", original_question)
-print("Generated Questions:")
-for i, generated_question in enumerate(generated_questions):
-    print(f"{i+1}. {generated_question}")
+    # Generate four synthetic rows with empty 'instruction' column
+    for _ in range(4):
+        synthetic_df = synthetic_df.append({'instruction': '', 'output': output_value}, ignore_index=True)
+
+# Save the synthetic data to a new CSV file
+synthetic_df.to_csv('synthetic_data.csv', index=False)
