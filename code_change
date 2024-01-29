@@ -1,39 +1,25 @@
-import pandas as pd
-from transformers import GPT2LMHeadModel, GPT2Tokenizer
-
-# Load your CSV file into a DataFrame
-df = pd.read_csv('input_data.csv')
-
-# Display the first few rows to check the data
-print(df.head())
+from transformers import T5Tokenizer, T5ForConditionalGeneration
 
 # Load pre-trained model and tokenizer
-model_name = "EleutherAI/gpt-neo-2.7B"
-tokenizer = GPT2Tokenizer.from_pretrained(model_name)
-model = GPT2LMHeadModel.from_pretrained(model_name)
+model_name = "t5-small"
+tokenizer = T5Tokenizer.from_pretrained(model_name)
+model = T5ForConditionalGeneration.from_pretrained(model_name)
 
-# Function to generate new questions with the same output
-def generate_augmented_data(row):
-    original_question = row['Question']
-    output_label = row['Output']
-
-    inputs = tokenizer.encode(original_question, return_tensors="pt", max_length=512, truncation=True)
-    outputs = model.generate(inputs, max_length=100, num_return_sequences=4, no_repeat_ngram_size=2, top_k=50, top_p=0.95, temperature=0.7)
-
-    augmented_data = []
-    for output in outputs:
-        generated_question = tokenizer.decode(output, skip_special_tokens=True)
-        augmented_data.append({'Question': generated_question, 'Output': output_label})
-
-    return augmented_data
+# Function to generate new questions
+def generate_questions(question):
+    input_text = f"generate questions: {question}"
+    inputs = tokenizer(input_text, return_tensors="pt", max_length=512, truncation=True)
+    outputs = model.generate(**inputs, max_length=100, num_return_sequences=4, no_repeat_ngram_size=2, top_k=50, top_p=0.95, temperature=0.7)
+    generated_questions = [tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
+    return generated_questions
 
 # Iterate through each row, generate new questions, and append to the DataFrame
-augmented_rows = []
 for index, row in df.iterrows():
-    augmented_rows.extend(generate_augmented_data(row))
-
-# Create a new DataFrame with augmented data
-augmented_df = pd.DataFrame(augmented_rows)
+    original_question = row['Question']
+    generated_questions = generate_questions(original_question)
+    
+    for i, generated_question in enumerate(generated_questions):
+        df = df.append({'Question': generated_question, 'Output': row['Output']}, ignore_index=True)
 
 # Save the augmented DataFrame to a new CSV file
-augmented_df.to_csv('augmented_data.csv', index=False)
+df.to_csv('augmented_data.csv', index=False)
