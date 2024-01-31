@@ -17,8 +17,9 @@ def normalize_query(query):
         normalized_conditions = []
         for condition in conditions_list:
             if 'BETWEEN' in condition:
-                # Normalize 'BETWEEN' conditions by sorting the range values
-                normalized_condition = 'BETWEEN ' + ' AND '.join(sorted(re.findall(r'\d+', condition)))
+                # Normalize 'BETWEEN' conditions by sorting the range values numerically
+                values = re.findall(r'\d+', condition)
+                normalized_condition = 'BETWEEN ' + ' AND '.join(map(str, sorted(map(int, values))))
             else:
                 # For other conditions, normalize by sorting
                 normalized_condition = ' '.join(sorted(re.findall(r'\S+', condition)))
@@ -32,13 +33,7 @@ def normalize_query(query):
         # If there's no WHERE clause, return the original query
         return query
 
-def compare_queries(true_query, predicted_query):
-    # Normalize the true and predicted queries
-    normalized_true_query = normalize_query(true_query)
-    normalized_predicted_query = normalize_query(predicted_query)
-
-    # Check if the normalized queries are equal
-    return normalized_true_query == normalized_predicted_query
+# Rest of the code remains the same
 
 # Example usage:
 predicted_queries = [
