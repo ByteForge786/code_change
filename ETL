@@ -1,0 +1,68 @@
+import pandas as pd
+import random
+import networkx as nx
+from openpyxl import Workbook
+from openpyxl.utils.dataframe import dataframe_to_rows
+
+# Generate sample data with source and sink
+num_entries = 10
+
+# Sample source and sink names
+sources = ['SourceA', 'SourceB', 'SourceC']
+sinks = ['SinkX', 'SinkY', 'SinkZ']
+
+# Generate sample data with sources and sinks
+data = {'Source': random.choices(sources, k=num_entries),
+        'Sink': random.choices(sinks, k=num_entries)}
+
+# Create a DataFrame
+df = pd.DataFrame(data)
+
+# Save to Excel file
+excel_filename = 'sample_data.xlsx'
+with pd.ExcelWriter(excel_filename, engine='openpyxl') as writer:
+    df.to_excel(writer, sheet_name='Sheet1', index=False)
+
+# Read the Excel file
+df = pd.read_excel(excel_filename, sheet_name='Sheet1')
+
+# Create a directed graph
+G = nx.DiGraph()
+
+# Add nodes and edges based on the DataFrame
+for index, row in df.iterrows():
+    G.add_edge(row['Source'], row['Sink'])
+
+# Save graph information to Excel
+wb = Workbook()
+ws = wb.active
+
+# Write node information
+ws.append(['Node', 'Type'])
+for node in G.nodes:
+    ws.append([node, 'Source' if node in sources else 'Sink'])
+
+# Write edge information
+ws.append([])  # Separate nodes and edges
+ws.append(['Source', 'Sink'])
+for edge in G.edges:
+    ws.append([edge[0], edge[1]])
+
+# Save the workbook
+graph_info_excel_filename = 'graph_info.xlsx'
+wb.save(graph_info_excel_filename)
+
+# Display the plot (optional)
+pos = nx.spring_layout(G)
+nx.draw(G, pos, with_labels=True, node_size=2000, node_color='lightblue', font_size=10, font_color='black', font_weight='bold', arrowsize=20, connectionstyle='arc3,rad=0.1')
+plt.title("Data Flow from Source to Sink")
+plt.show()
+
+# Mapping description
+mapping_description = df.groupby('Source')['Sink'].unique().to_dict()
+
+print("Mapping Description:")
+for source, sinks in mapping_description.items():
+    print(f"{source}: {', '.join(sinks)}")
+
+print("Graph information saved to", graph_info_excel_filename)
