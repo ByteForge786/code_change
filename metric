@@ -1,0 +1,46 @@
+def normalize_query(query):
+    # Add your normalization logic here (e.g., parsing and sorting conditions)
+    # This is a simplified example assuming the conditions are separated by 'AND'
+    conditions = query.split("AND")
+    sorted_conditions = sorted(conditions)
+    normalized_query = "SELECT * FROM table1 WHERE " + " AND ".join(sorted_conditions)
+    return normalized_query
+
+def calculate_metrics(predicted_queries, true_queries):
+    # Ensure both lists have the same length
+    assert len(predicted_queries) == len(true_queries), "Input lists must have the same length."
+
+    # Initialize variables for true positives, false positives, and false negatives
+    tp = fp = fn = 0
+
+    # Iterate through the predicted and true queries
+    for predicted_query, true_query in zip(predicted_queries, true_queries):
+        # Normalize the queries before comparison
+        normalized_predicted_query = normalize_query(predicted_query)
+        normalized_true_query = normalize_query(true_query)
+
+        # Check if the normalized predicted query is correct
+        if normalized_predicted_query == normalized_true_query:
+            tp += 1
+        else:
+            fp += 1  # Normalized predicted query is incorrect, so it's a false positive
+            fn += 1  # Normalized true query was not predicted, so it's a false negative
+
+    # Calculate precision, recall, and F1 score
+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0
+    recall = tp / (tp + fn) if (tp + fn) > 0 else 0
+    f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
+
+    return precision, recall, f1_score
+
+# Example usage:
+predicted_queries = ["SELECT * FROM table1 WHERE column1 = 'value1' AND column2 = 'value2'",
+                     "SELECT * FROM table1 WHERE column2 = 'value2' AND column1 = 'value1'"]
+true_queries = ["SELECT * FROM table1 WHERE column1 = 'value1' AND column2 = 'value2'",
+                 "SELECT * FROM table1 WHERE column2 = 'value2' AND column1 = 'value1'"]
+
+precision, recall, f1_score = calculate_metrics(predicted_queries, true_queries)
+
+print("Precision:", precision)
+print("Recall:", recall)
+print("F1 Score:", f1_score)
