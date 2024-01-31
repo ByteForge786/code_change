@@ -33,7 +33,37 @@ def normalize_query(query):
         # If there's no WHERE clause, return the original query
         return query
 
-# Rest of the code remains the same
+def compare_queries(true_query, predicted_query):
+    # Normalize the true and predicted queries
+    normalized_true_query = normalize_query(true_query)
+    normalized_predicted_query = normalize_query(predicted_query)
+
+    # Check for equality, ignoring the order of values in the 'BETWEEN' clause
+    return sorted(normalized_true_query.split()) == sorted(normalized_predicted_query.split())
+
+def calculate_metrics(predicted_queries, true_queries):
+    # Initialize variables for true positives, false positives, and false negatives
+    tp = fp = fn = 0
+
+    # Iterate through the predicted and true queries
+    for predicted_query in predicted_queries:
+        # Check if there is a true query that matches the predicted query
+        match_found = any(compare_queries(predicted_query, true_query) for true_query in true_queries)
+
+        if match_found:
+            tp += 1
+        else:
+            fp += 1
+
+    # Calculate false negatives by subtracting true positives from the total true queries
+    fn = len(true_queries) - tp
+
+    # Calculate precision, recall, and F1 score
+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0
+    recall = tp / (tp + fn) if (tp + fn) > 0 else 0
+    f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
+
+    return precision, recall, f1_score
 
 # Example usage:
 predicted_queries = [
@@ -47,7 +77,8 @@ true_queries = [
     "SELECT * FROM table1 WHERE column3 BETWEEN 20 AND 10"
 ]
 
-# Check for equality and print results
-for true_query, predicted_query in zip(true_queries, predicted_queries):
-    result = compare_queries(true_query, predicted_query)
-    print(f"True Query: {true_query}\nPredicted Query: {predicted_query}\nEquality: {result}\n")
+precision, recall, f1_score = calculate_metrics(predicted_queries, true_queries)
+
+print("Precision:", precision)
+print("Recall:", recall)
+print("F1 Score:", f1_score)
