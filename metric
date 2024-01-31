@@ -39,7 +39,12 @@ def compare_queries(true_query, predicted_query):
     normalized_predicted_query = normalize_query(predicted_query)
 
     # Check for equality, ignoring the order of values in the 'BETWEEN' clause
-    return sorted(normalized_true_query.split()) == sorted(normalized_predicted_query.split())
+    result = sorted(normalized_true_query.split()) == sorted(normalized_predicted_query.split())
+
+    # Print the result and the queries
+    print(f"True Query: {true_query}\nPredicted Query: {predicted_query}\nEquality: {result}\n")
+
+    return result
 
 def calculate_metrics(predicted_queries, true_queries):
     # Initialize variables for true positives, false positives, and false negatives
