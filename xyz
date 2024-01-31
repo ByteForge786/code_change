@@ -1,0 +1,50 @@
+import pandas as pd
+import openai
+
+# Set your OpenAI API key
+openai.api_key = "YOUR_OPENAI_API_KEY"
+
+# Function to generate predictions using the language model
+def generate_predictions(instructions):
+    # Specify the prompt for the language model
+    prompt = f"Generate SQL queries from the instruction: {instructions}"
+
+    # Make a request to the OpenAI API for language model prediction
+    response = openai.Completion.create(
+        engine="text-davinci-003",  # Use the appropriate engine
+        prompt=prompt,
+        max_tokens=150  # You can adjust this based on your needs
+    )
+
+    # Extract the generated SQL query from the response
+    predicted_query = response["choices"][0]["text"].strip()
+
+    return predicted_query
+
+# Function to process the CSV file and generate predictions
+def process_csv(input_csv, output_csv):
+    # Read the input CSV file into a pandas DataFrame
+    df = pd.read_csv(input_csv)
+
+    # Initialize a new column for predicted_queries
+    df['predicted_queries'] = ""
+
+    # Iterate through each row to generate predictions
+    for index, row in df.iterrows():
+        # Get the instruction from the 'instructions' column
+        instruction = row['instructions']
+
+        # Generate a prediction using the language model
+        predicted_query = generate_predictions(instruction)
+
+        # Update the 'predicted_queries' column
+        df.at[index, 'predicted_queries'] = predicted_query
+
+    # Save the DataFrame with predictions to the output CSV file
+    df.to_csv(output_csv, index=False)
+
+# Example usage
+input_csv_file = 'your_input_file.csv'  # Replace with the actual input CSV file
+output_csv_file = 'your_output_file.csv'  # Replace with the desired output CSV file
+
+process_csv(input_csv_file, output_csv_file)
