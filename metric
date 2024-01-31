@@ -32,7 +32,13 @@ def normalize_query(query):
         # If there's no WHERE clause, return the original query
         return query
 
-# Rest of the code remains the same
+def compare_queries(true_query, predicted_query):
+    # Normalize the true and predicted queries
+    normalized_true_query = normalize_query(true_query)
+    normalized_predicted_query = normalize_query(predicted_query)
+
+    # Check if the normalized queries are equal
+    return normalized_true_query == normalized_predicted_query
 
 # Example usage:
 predicted_queries = [
@@ -46,8 +52,7 @@ true_queries = [
     "SELECT * FROM table1 WHERE column3 BETWEEN 20 AND 10"
 ]
 
-precision, recall, f1_score = calculate_metrics(predicted_queries, true_queries)
-
-print("Precision:", precision)
-print("Recall:", recall)
-print("F1 Score:", f1_score)
+# Check for equality and print results
+for true_query, predicted_query in zip(true_queries, predicted_queries):
+    result = compare_queries(true_query, predicted_query)
+    print(f"True Query: {true_query}\nPredicted Query: {predicted_query}\nEquality: {result}\n")
