@@ -1,0 +1,24 @@
+import pandas as pd
+import pandasql as psql
+
+# Create a sample DataFrame
+data = {'predicted_queries': ['SELECT * FROM df WHERE column_name = "value1"', 'SELECT * FROM df WHERE column_name = "value2"'],
+        'true_queries': ['SELECT * FROM df WHERE column_name = "value1"', 'SELECT * FROM df WHERE column_name = "value3"']}
+df = pd.DataFrame(data)
+
+# Iterate through each row and execute the queries
+for index, row in df.iterrows():
+    predicted_query = row['predicted_queries']
+    true_query = row['true_queries']
+
+    # Execute the predicted query
+    predicted_result_df = psql.sqldf(predicted_query, locals())
+
+    # Execute the true query
+    true_result_df = psql.sqldf(true_query, locals())
+
+    # Check if the results are similar
+    if predicted_result_df.equals(true_result_df):
+        print(f"Row {index + 1}: Results are similar")
+    else:
+        print(f"Row {index + 1}: Results are different")
