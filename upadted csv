@@ -1,10 +1,30 @@
 import pandas as pd
 import pandasql as psql
 
-# Create a sample DataFrame
-data = {'predicted_queries': ['SELECT * FROM df WHERE column_name = "value1"', 'SELECT * FROM df WHERE column_name = "value2"'],
-        'true_queries': ['SELECT * FROM df WHERE column_name = "value1"', 'SELECT * FROM df WHERE column_name = "value3"']}
+# Sample data
+data = {'predicted_queries': ['SELECT * FROM df WHERE age > 25',
+                              'SELECT name, age FROM df WHERE city = "New York"',
+                              'SELECT MAX(salary) FROM df WHERE department = "Sales"'],
+        'true_queries': ['SELECT * FROM df WHERE age > 25',
+                         'SELECT name, age FROM df WHERE city = "New York"',
+                         'SELECT MAX(salary) FROM df WHERE department = "Sales"']}
+
+# Create a DataFrame
 df = pd.DataFrame(data)
+
+# Create actual data directly in code
+actual_data = {'id': [1, 2, 3, 4, 5],
+               'name': ['John', 'Alice', 'Bob', 'Emily', 'Charlie'],
+               'age': [28, 32, 25, 35, 29],
+               'city': ['New York', 'Los Angeles', 'Chicago', 'San Francisco', 'Boston'],
+               'salary': [75000, 80000, 70000, 90000, 85000],
+               'department': ['Sales', 'Marketing', 'IT', 'HR', 'Finance']}
+
+# Create a DataFrame for actual data
+actual_df = pd.DataFrame(actual_data)
+
+# Add the actual data DataFrame to the locals() dictionary
+locals()['df'] = actual_df
 
 # Iterate through each row and execute the queries
 for index, row in df.iterrows():
