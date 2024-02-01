@@ -31,6 +31,9 @@ actual_data = {
 # Create a DataFrame for the actual data
 actual_df = pd.DataFrame(actual_data)
 
+# Set index for actual_df
+actual_df.set_index('id', inplace=True)
+
 # Iterate through each row of the first CSV and execute the queries
 for index, row in queries_df.iterrows():
     predicted_query = row['predicted_queries']
