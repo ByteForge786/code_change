@@ -1,33 +1,38 @@
 import pandas as pd
 import pandasql as psql
 
-# Sample data
-data = {'predicted_queries': ['SELECT * FROM df WHERE age > 25',
-                              'SELECT name, age FROM df WHERE city = "New York"',
-                              'SELECT MAX(salary) FROM df WHERE department = "Sales"'],
-        'true_queries': ['SELECT * FROM df WHERE age > 25',
-                         'SELECT name, age FROM df WHERE city = "New York"',
-                         'SELECT MAX(salary) FROM df WHERE department = "Sales"']}
+# Sample data for the first CSV ('queries.csv')
+queries_data = {
+    'predicted_queries': [
+        'SELECT * FROM actual_data WHERE age > 25',
+        'SELECT name, age FROM actual_data WHERE city = "New York"',
+        'SELECT MAX(salary) FROM actual_data WHERE department = "Sales"'
+    ],
+    'true_queries': [
+        'SELECT * FROM actual_data WHERE age > 25',
+        'SELECT name, age FROM actual_data WHERE city = "New York"',
+        'SELECT MAX(salary) FROM actual_data WHERE department = "Sales"'
+    ]
+}
 
-# Create a DataFrame
-df = pd.DataFrame(data)
+# Create a DataFrame for the first CSV
+queries_df = pd.DataFrame(queries_data)
 
-# Create actual data directly in code
-actual_data = {'id': [1, 2, 3, 4, 5],
-               'name': ['John', 'Alice', 'Bob', 'Emily', 'Charlie'],
-               'age': [28, 32, 25, 35, 29],
-               'city': ['New York', 'Los Angeles', 'Chicago', 'San Francisco', 'Boston'],
-               'salary': [75000, 80000, 70000, 90000, 85000],
-               'department': ['Sales', 'Marketing', 'IT', 'HR', 'Finance']}
+# Sample data for the second CSV ('actual_data.csv')
+actual_data = {
+    'id': [1, 2, 3, 4, 5],
+    'name': ['John', 'Alice', 'Bob', 'Emily', 'Charlie'],
+    'age': [28, 32, 25, 35, 29],
+    'city': ['New York', 'Los Angeles', 'Chicago', 'San Francisco', 'Boston'],
+    'salary': [75000, 80000, 70000, 90000, 85000],
+    'department': ['Sales', 'Marketing', 'IT', 'HR', 'Finance']
+}
 
-# Create a DataFrame for actual data
+# Create a DataFrame for the actual data
 actual_df = pd.DataFrame(actual_data)
 
-# Add the actual data DataFrame to the locals() dictionary
-locals()['df'] = actual_df
-
-# Iterate through each row and execute the queries
-for index, row in df.iterrows():
+# Iterate through each row of the first CSV and execute the queries
+for index, row in queries_df.iterrows():
     predicted_query = row['predicted_queries']
     true_query = row['true_queries']
 
