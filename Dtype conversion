@@ -3,34 +3,21 @@ import numpy as np
 
 # Sample DataFrame
 data = {
-    'col1': [1, 2, 'a', 'b', True],
-    'col2': ['x', 'y', 3, 4, False],
-    'col3': [None, 5, 6, 'c', 'd']
+    'col1': [1, 2, None, 4, 5],
+    'col2': [None, None, None, None, None],  # Entire column is null
+    'col3': [None, 8, 9, 'd', 'f']
 }
 df = pd.DataFrame(data)
 
-# Convert None values to NaN
-df = df.applymap(lambda x: np.nan if x is None else x)
+# Function to filter non-null values from each column
+def filter_non_null(column):
+    return column[column.notnull()]
 
-# Function to check if a value is numeric
-def is_numeric(value):
-    try:
-        float_value = float(value)
-        return float_value != 0
-    except (ValueError, TypeError):
-        return False
+# Create a list of Series containing non-null values from each column
+series_list = [filter_non_null(df[col]) for col in df.columns]
 
-# Iterate over each column
-for col in df.select_dtypes(include='object').columns:
-    # Check if any non-zero value is numeric or text
-    if any(df[col].apply(lambda x: is_numeric(x) or isinstance(x, str))):
-        # Convert to int if possible
-        try:
-            df[col] = df[col].astype(int)
-        except ValueError:
-            pass  # Column contains non-numeric values, leave it unchanged
-        # Convert to string if not int
-        df[col] = df[col].astype(str)
+# Concatenate the Series into a new DataFrame
+new_df = pd.concat(series_list, axis=1)
 
-# Display the modified DataFrame
-print(df)
+# Display the new DataFrame
+print(new_df)
