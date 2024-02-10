@@ -9,15 +9,24 @@ data = {
 }
 df = pd.DataFrame(data)
 
-# Function to filter non-null values from each column
-def filter_non_null(column):
-    return column[column.notnull()]
+# Function to check if a value is NaN or None
+def is_nan_or_none(value):
+    return pd.isna(value) or value is None
 
-# Create a list of Series containing non-null values from each column
-series_list = [filter_non_null(df[col]) for col in df.columns]
+# Create a new DataFrame to store non-null values
+new_df = pd.DataFrame()
 
-# Concatenate the Series into a new DataFrame
-new_df = pd.concat(series_list, axis=1)
+# Iterate over each column
+for col in df.columns:
+    # Extract non-null values for the column
+    non_null_values = df[col].dropna().head(5)
+    
+    # If all values in the original column are null, add NaN values
+    if df[col].apply(is_nan_or_none).all():
+        non_null_values = pd.Series([np.nan] * 5)
+    
+    # Add non-null values to the new DataFrame
+    new_df[col] = non_null_values
 
 # Display the new DataFrame
 print(new_df)
