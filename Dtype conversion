@@ -30,3 +30,27 @@ for col in df.columns:
 
 # Display the new DataFrame
 print(new_df)
+
+
+import pandas as pd
+import numpy as np
+
+# Sample DataFrame
+data = {
+    'col1': [1, 2, None, 4, 5],
+    'col2': [6, None, 8, 9, 10],
+    'col3': [11, 12, 13, 14, 15]
+}
+df = pd.DataFrame(data)
+
+# Create a new DataFrame with exactly 5 records, filling missing values with NaN
+new_df = pd.DataFrame()
+
+for col in df.columns:
+    non_null_values = df[col].dropna().reset_index(drop=True)
+    null_count = 5 - len(non_null_values)
+    nan_values = pd.Series([np.nan] * null_count)
+    new_df[col] = pd.concat([non_null_values, nan_values], ignore_index=True)
+
+# Display the new DataFrame
+print(new_df)
