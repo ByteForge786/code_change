@@ -1,34 +1,36 @@
 import pandas as pd
+import numpy as np
 
 # Sample DataFrame
 data = {
     'col1': [1, 2, 'a', 'b', True],
-    'col2': ['x', 'y', 3, 4, False]
+    'col2': ['x', 'y', 3, 4, False],
+    'col3': [None, 5, 6, 'c', 'd']
 }
 df = pd.DataFrame(data)
 
-# Function to convert column to int if possible
-def convert_to_int(column):
-    try:
-        return column.astype(int)
-    except ValueError:
-        return column
+# Convert None values to NaN
+df = df.applymap(lambda x: np.nan if x is None else x)
 
-# Function to convert column to string if possible
-def convert_to_string(column):
+# Function to check if a value is numeric
+def is_numeric(value):
     try:
-        return column.astype(str)
-    except ValueError:
-        return column
+        float_value = float(value)
+        return float_value != 0
+    except (ValueError, TypeError):
+        return False
 
 # Iterate over each column
-for col in df.columns:
-    # Check if any entry is numeric or string
-    if any(pd.to_numeric(df[col], errors='coerce').notnull()) or any(df[col].apply(lambda x: isinstance(x, str))):
+for col in df.select_dtypes(include='object').columns:
+    # Check if any non-zero value is numeric or text
+    if any(df[col].apply(lambda x: is_numeric(x) or isinstance(x, str))):
         # Convert to int if possible
-        df[col] = convert_to_int(df[col])
+        try:
+            df[col] = df[col].astype(int)
+        except ValueError:
+            pass  # Column contains non-numeric values, leave it unchanged
         # Convert to string if not int
-        df[col] = convert_to_string(df[col])
+        df[col] = df[col].astype(str)
 
 # Display the modified DataFrame
 print(df)
