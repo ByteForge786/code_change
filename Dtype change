@@ -1,0 +1,19 @@
+import pandas as pd
+
+# Your DataFrame with mixed data types
+df = pd.DataFrame({
+    'ID': ['1', '2', '3'],
+    'Name': ['Alice', 'Bob', 'Charlie'],
+    'Age': ['25', '30', None]
+})
+
+# Find object type columns and convert them based on content
+for column in df.select_dtypes(include=['object']).columns:
+    # Filter out None values and check if all remaining values are numeric strings
+    if all(str(value).isdigit() for value in df[column] if value is not None):
+        df[column] = pd.to_numeric(df[column], errors='coerce')  # Convert to numeric
+    else:
+        df[column] = df[column].astype(str)  # Convert to string
+
+# Check data types after conversion
+print(df.dtypes)
