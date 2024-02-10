@@ -14,17 +14,25 @@ status_text = st.empty()
 
 progress_text = "Generating response..."
 progress = 0
-while progress < 100:
+response = None
+timeout = 31  # Average response time in seconds
+
+start_time = time.time()
+
+while progress < 100 and (time.time() - start_time) < timeout:
     # Simulate some processing
     time.sleep(0.1)
     # Update progress
-    progress += 10
-    progress_bar.progress(min(progress, 100))
-    progress_text = f"Generating response... {min(progress, 100)}%"
+    progress = min(int((time.time() - start_time) / timeout * 100), 100)
+    progress_bar.progress(progress)
+    progress_text = f"Generating response... {progress}%"
     status_text.text(progress_text)
+    
+    # Check if the response is ready
+    response = get_results_from_llm()
 
-# Get the response from the LLM model
-response = get_results_from_llm()
-
-# Update the status text with the response
-status_text.text(response)
+# Once the response is ready or the timeout is reached, display it
+if response:
+    st.write(response)
+else:
+    st.error("Timeout: Unable to generate response within the specified time.")
