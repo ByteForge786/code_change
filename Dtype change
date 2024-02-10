@@ -26,3 +26,9 @@ for column in df.columns:
 
 # Check data types after conversion
 print(df.dtypes)
+for column in df.select_dtypes(include=['object']).columns:
+    # Check if all values are strings before conversion
+    if all(isinstance(value, str) for value in df[column] if value is not None):
+        df[column] = df[column].astype(str)
+
+#
