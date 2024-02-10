@@ -1,0 +1,30 @@
+import streamlit as st
+import time
+
+# Define your own function to retrieve results from the LLM model
+def get_results_from_llm():
+    # Your code to interact with the LLM model and retrieve responses goes here
+    # This function should return the generated response once it's available
+    time.sleep(5)  # Simulating processing time for demonstration
+    return "Here is the response from the LLM model!"
+
+# Display a progress bar while waiting for the response
+progress_bar = st.progress(0)
+status_text = st.empty()
+
+progress_text = "Generating response..."
+progress = 0
+while progress < 100:
+    # Simulate some processing
+    time.sleep(0.1)
+    # Update progress
+    progress += 10
+    progress_bar.progress(min(progress, 100))
+    progress_text = f"Generating response... {min(progress, 100)}%"
+    status_text.text(progress_text)
+
+# Get the response from the LLM model
+response = get_results_from_llm()
+
+# Update the status text with the response
+status_text.text(response)
