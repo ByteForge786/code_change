@@ -4,16 +4,25 @@ import pandas as pd
 df = pd.DataFrame({
     'ID': ['1', '2', '3'],
     'Name': ['Alice', 'Bob', 'Charlie'],
-    'Age': ['25', '30', None]
+    'Age': ['25', '30', None],
+    'City': [None, 'New York', 'Los Angeles'],
+    'Join_Date_Time': ['2022-01-01 08:30:00', '2022-02-15 12:45:00', '2022-03-20 18:20:00']
 })
 
-# Find object type columns and convert them based on content
+# Convert object type columns based on content
 for column in df.select_dtypes(include=['object']).columns:
-    # Filter out None values and check if all remaining values are numeric strings
     if all(str(value).isdigit() for value in df[column] if value is not None):
         df[column] = pd.to_numeric(df[column], errors='coerce')  # Convert to numeric
     else:
         df[column] = df[column].astype(str)  # Convert to string
+
+# Detect and convert datetime columns
+for column in df.columns:
+    if pd.api.types.is_datetime64_any_dtype(df[column]):
+        try:
+            df[column] = pd.to_datetime(df[column])
+        except (TypeError, ValueError):
+            pass  # Ignore columns that can't be converted to datetime
 
 # Check data types after conversion
 print(df.dtypes)
