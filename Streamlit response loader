@@ -13,13 +13,11 @@ progress_bar = st.progress(0)
 status_text = st.empty()
 
 progress_text = "Generating response..."
-progress = 0
-response = None
+start_time = time.time()
 timeout = 31  # Average response time in seconds
 
-start_time = time.time()
-
-while progress < 100 and (time.time() - start_time) < timeout:
+response = None
+while response is None and time.time() - start_time < timeout:
     # Simulate some processing
     time.sleep(0.1)
     # Update progress
