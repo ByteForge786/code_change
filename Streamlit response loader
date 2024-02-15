@@ -1,19 +1,6 @@
-button_css = """
-    <style>
-    .theme-switcher-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-    }
-    </style>
-    """
-
-    # Add the CSS to the sidebar
-    st.markdown(button_css, unsafe_allow_html=True)
-
-    # Theme switcher button
-    if st.sidebar.button('Switch Theme', key='theme_switch'):
-        if st.get_option("theme") == "dark":
-            st.set_option("theme", "light")
-        else:
-            st.set_option("theme", "dark")
+st.sidebar.markdown("---")
+if st.sidebar.button('Switch Theme', key='theme_switch'):
+    if st.get_option("theme") == "dark":
+        st.set_option("theme", "light")
+    else:
+        st.set_option("theme", "dark")
