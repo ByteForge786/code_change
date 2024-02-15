@@ -1,17 +1,19 @@
-import streamlit as st
-import time
+button_css = """
+    <style>
+    .theme-switcher-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+    </style>
+    """
 
-# Define your own function to retrieve results from the LLM model
-def get_results_from_llm():
-    # Your code to interact with the LLM model and retrieve responses goes here
-    # This function should return the generated response once it's available
-    time.sleep(5)  # Simulating processing time for demonstration
-    return "Here is the response from the LLM model!"
+    # Add the CSS to the sidebar
+    st.markdown(button_css, unsafe_allow_html=True)
 
-# Display a spinner to indicate loading
-with st.spinner("Generating response..."):
-    # Retrieve results from the LLM model
-    response = get_results_from_llm()
-
-# Once the response is ready, display it
-st.write(response)
+    # Theme switcher button
+    if st.sidebar.button('Switch Theme', key='theme_switch'):
+        if st.get_option("theme") == "dark":
+            st.set_option("theme", "light")
+        else:
+            st.set_option("theme", "dark")
