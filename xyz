@@ -1,28 +1,23 @@
 import streamlit as st
 
-class SessionState:
-    def __init__(self, **kwargs):
-        self.session_id = st.report_thread.get_report_ctx().session_id
-        for key, val in kwargs.items():
-            setattr(self, key, val)
-
 def main():
     st.title("Username Authentication")
-
-    session_state = SessionState(username="")
 
     username = st.text_input("Username")
 
     if st.button("Login"):
         if username:
-            session_state.username = username
-            st.success(f"Welcome, {session_state.username}!")
+            session_id = hex(hash(username))  # Generate unique session ID based on username
+            st.session_state[session_id] = username
+            st.success(f"Welcome, {username}!")
         else:
             st.error("Please enter a username.")
 
     # Perform actions based on the authenticated username
-    if session_state.username:
-        st.write(f"Logged in as: {session_state.username}")
+    session_id = hex(hash(username)) if username else None
+    if session_id in st.session_state:
+        username = st.session_state[session_id]
+        st.write(f"Logged in as: {username}")
 
 if __name__ == "__main__":
     main()
