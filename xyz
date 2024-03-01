@@ -55,3 +55,54 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+import streamlit as st
+
+def dummy_function(username):
+    # Dummy function specific to each user
+    st.write(f"Hello, {username}! This is a dummy function.")
+
+def main():
+    st.title("Username Authentication")
+
+    if 'session_id' not in st.session_state:
+        st.session_state['session_id'] = None
+
+    if 'username' not in st.session_state:
+        st.session_state['username'] = ""
+
+    if 'function_state' not in st.session_state:
+        st.session_state['function_state'] = {}
+
+    username = st.text_input("Username")
+
+    if st.button("Login"):
+        if username:
+            st.session_state['username'] = username
+            session_id = hex(hash(username))  # Generate unique session ID based on username
+            st.session_state['session_id'] = session_id
+            st.session_state['function_state'][session_id] = False  # Initialize function state for this session
+            st.success(f"Welcome, {username}!")
+        else:
+            st.error("Please enter a username.")
+
+    # Perform actions based on the authenticated username
+    if st.session_state['username']:
+        st.write(f"Logged in as: {st.session_state['username']}")
+        
+        session_id = st.session_state['session_id']
+        if not st.session_state['function_state'][session_id]:
+            dummy_function(st.session_state['username'])
+            st.session_state['function_state'][session_id] = True
+
+    if st.button("Logout"):
+        session_id = st.session_state['session_id']
+        st.session_state['username'] = ""
+        st.session_state['session_id'] = None
+        st.session_state['function_state'][session_id] = False  # Reset function state for this session
+        st.success("Logged out successfully!")
+
+if __name__ == "__main__":
+    main()
+
