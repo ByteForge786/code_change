@@ -21,3 +21,37 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+import streamlit as st
+
+def main():
+    st.title("Username Authentication")
+
+    if 'session_id' not in st.session_state:
+        st.session_state['session_id'] = None
+
+    if 'username' not in st.session_state:
+        st.session_state['username'] = ""
+
+    username = st.text_input("Username")
+
+    if st.button("Login"):
+        if username:
+            st.session_state['username'] = username
+            st.session_state['session_id'] = hex(hash(username))  # Generate unique session ID based on username
+            st.success(f"Welcome, {username}!")
+        else:
+            st.error("Please enter a username.")
+
+    # Perform actions based on the authenticated username
+    if st.session_state['username']:
+        st.write(f"Logged in as: {st.session_state['username']}")
+
+    if st.button("Logout"):
+        st.session_state['username'] = ""
+        st.session_state['session_id'] = None
+        st.success("Logged out successfully!")
+
+if __name__ == "__main__":
+    main()
