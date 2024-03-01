@@ -106,3 +106,58 @@ def main():
 if __name__ == "__main__":
     main()
 
+import streamlit as st
+
+# Dummy function to simulate SQL query based on username
+def query_database(username):
+    return f"SELECT * FROM messages WHERE username = '{username}';"
+
+def main():
+    st.title("Chat Interface")
+
+    if 'session_id' not in st.session_state:
+        st.session_state['session_id'] = None
+
+    if 'username' not in st.session_state:
+        st.session_state['username'] = ""
+
+    if 'messages' not in st.session_state:
+        st.session_state['messages'] = []
+
+    username = st.text_input("Username")
+
+    if st.button("Login"):
+        if username:
+            st.session_state['username'] = username
+            session_id = hex(hash(username))  # Generate unique session ID based on username
+            st.session_state['session_id'] = session_id
+            st.success(f"Welcome, {username}!")
+        else:
+            st.error("Please enter a username.")
+
+    # Perform actions based on the authenticated username
+    if st.session_state['username']:
+        st.write(f"Logged in as: {st.session_state['username']}")
+
+        if st.session_state['session_id'] not in st.session_state['messages']:
+            # Query SQL based on username (dummy function)
+            sql_query = query_database(st.session_state['username'])
+            st.session_state['messages'].append((st.session_state['session_id'], sql_query))
+
+        # Display messages for this session
+        st.write("Chat Messages:")
+        for session_id, message in st.session_state['messages']:
+            if session_id == st.session_state['session_id']:
+                st.write(message)
+
+    if st.button("Logout"):
+        session_id = st.session_state['session_id']
+        st.session_state['username'] = ""
+        st.session_state['session_id'] = None
+        st.session_state['messages'] = [(s_id, msg) for s_id, msg in st.session_state['messages'] if s_id != session_id]
+        st.success("Logged out successfully!")
+
+if __name__ == "__main__":
+    main()
+
+
