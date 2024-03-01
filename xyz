@@ -1,19 +1,28 @@
-output_dir = os.path.dirname(source_file)
+import streamlit as st
 
-# Remove the final parameter from the directory path
-output_dir_parts = output_dir.split(os.path.sep)
-output_dir = os.path.join(*output_dir_parts[:-1])
+class SessionState:
+    def __init__(self, **kwargs):
+        self.session_id = st.report_thread.get_report_ctx().session_id
+        for key, val in kwargs.items():
+            setattr(self, key, val)
 
-# Write predicted pairs to a CSV file in the same directory as the source file
-output_file = os.path.join(output_dir, "predicted_pairs.csv")
-with open(output_file, mode='w', newline='') as file:
-    writer = csv.writer(file)
-    
-    # Write header
-    writer.writerow(["Source Column", "Target Column", "Score"])
-    
-    # Write predicted pairs
-    for pair_tuple in predicted_pairs:
-        writer.writerow(pair_tuple)
+def main():
+    st.title("Username Authentication")
 
-print("Predicted pairs saved to", output_file)
+    session_state = SessionState(username="")
+
+    username = st.text_input("Username")
+
+    if st.button("Login"):
+        if username:
+            session_state.username = username
+            st.success(f"Welcome, {session_state.username}!")
+        else:
+            st.error("Please enter a username.")
+
+    # Perform actions based on the authenticated username
+    if session_state.username:
+        st.write(f"Logged in as: {session_state.username}")
+
+if __name__ == "__main__":
+    main()
