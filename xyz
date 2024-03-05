@@ -18,10 +18,11 @@ def process_folders(root_folder):
     for folder_name in os.listdir(root_folder):
         folder_path = os.path.join(root_folder, folder_name)
         if os.path.isdir(folder_path):
-            csv_file = os.path.join(folder_path, 'input.csv')
-            mapping_file = os.path.join(folder_path, 'mapping.txt')
-            if os.path.exists(csv_file):
-                create_mapping(csv_file, mapping_file)
+            for file_name in os.listdir(folder_path):
+                if file_name.startswith("predicted_lineage_") and file_name.endswith(".csv"):
+                    csv_file = os.path.join(folder_path, file_name)
+                    mapping_file = os.path.join(folder_path, 'mapping.txt')
+                    create_mapping(csv_file, mapping_file)
 
 # Replace 'Test Data' with the path to your root folder
 root_folder = 'Test Data'
