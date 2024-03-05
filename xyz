@@ -1,163 +1,28 @@
-import streamlit as st
+import os
+import csv
 
-def main():
-    st.title("Username Authentication")
+def create_mapping(csv_file, mapping_file):
+    mappings = {}
+    with open(csv_file, 'r') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            source = row['source_column']
+            target = row['target_column']
+            mappings[source] = target
 
-    username = st.text_input("Username")
+    with open(mapping_file, 'w') as outfile:
+        for source, target in mappings.items():
+            outfile.write(f"<{source}, {target}>\n")
 
-    if st.button("Login"):
-        if username:
-            session_id = hex(hash(username))  # Generate unique session ID based on username
-            st.session_state[session_id] = username
-            st.success(f"Welcome, {username}!")
-        else:
-            st.error("Please enter a username.")
+def process_folders(root_folder):
+    for folder_name in os.listdir(root_folder):
+        folder_path = os.path.join(root_folder, folder_name)
+        if os.path.isdir(folder_path):
+            csv_file = os.path.join(folder_path, 'input.csv')
+            mapping_file = os.path.join(folder_path, 'mapping.txt')
+            if os.path.exists(csv_file):
+                create_mapping(csv_file, mapping_file)
 
-    # Perform actions based on the authenticated username
-    session_id = hex(hash(username)) if username else None
-    if session_id in st.session_state:
-        username = st.session_state[session_id]
-        st.write(f"Logged in as: {username}")
-
-if __name__ == "__main__":
-    main()
-
-
-import streamlit as st
-
-def main():
-    st.title("Username Authentication")
-
-    if 'session_id' not in st.session_state:
-        st.session_state['session_id'] = None
-
-    if 'username' not in st.session_state:
-        st.session_state['username'] = ""
-
-    username = st.text_input("Username")
-
-    if st.button("Login"):
-        if username:
-            st.session_state['username'] = username
-            st.session_state['session_id'] = hex(hash(username))  # Generate unique session ID based on username
-            st.success(f"Welcome, {username}!")
-        else:
-            st.error("Please enter a username.")
-
-    # Perform actions based on the authenticated username
-    if st.session_state['username']:
-        st.write(f"Logged in as: {st.session_state['username']}")
-
-    if st.button("Logout"):
-        st.session_state['username'] = ""
-        st.session_state['session_id'] = None
-        st.success("Logged out successfully!")
-
-if __name__ == "__main__":
-    main()
-
-
-import streamlit as st
-
-def dummy_function(username):
-    # Dummy function specific to each user
-    st.write(f"Hello, {username}! This is a dummy function.")
-
-def main():
-    st.title("Username Authentication")
-
-    if 'session_id' not in st.session_state:
-        st.session_state['session_id'] = None
-
-    if 'username' not in st.session_state:
-        st.session_state['username'] = ""
-
-    if 'function_state' not in st.session_state:
-        st.session_state['function_state'] = {}
-
-    username = st.text_input("Username")
-
-    if st.button("Login"):
-        if username:
-            st.session_state['username'] = username
-            session_id = hex(hash(username))  # Generate unique session ID based on username
-            st.session_state['session_id'] = session_id
-            st.session_state['function_state'][session_id] = False  # Initialize function state for this session
-            st.success(f"Welcome, {username}!")
-        else:
-            st.error("Please enter a username.")
-
-    # Perform actions based on the authenticated username
-    if st.session_state['username']:
-        st.write(f"Logged in as: {st.session_state['username']}")
-        
-        session_id = st.session_state['session_id']
-        if not st.session_state['function_state'][session_id]:
-            dummy_function(st.session_state['username'])
-            st.session_state['function_state'][session_id] = True
-
-    if st.button("Logout"):
-        session_id = st.session_state['session_id']
-        st.session_state['username'] = ""
-        st.session_state['session_id'] = None
-        st.session_state['function_state'][session_id] = False  # Reset function state for this session
-        st.success("Logged out successfully!")
-
-if __name__ == "__main__":
-    main()
-
-import streamlit as st
-
-# Dummy function to simulate SQL query based on username
-def query_database(username):
-    return f"SELECT * FROM messages WHERE username = '{username}';"
-
-def main():
-    st.title("Chat Interface")
-
-    if 'session_id' not in st.session_state:
-        st.session_state['session_id'] = None
-
-    if 'username' not in st.session_state:
-        st.session_state['username'] = ""
-
-    if 'messages' not in st.session_state:
-        st.session_state['messages'] = []
-
-    username = st.text_input("Username")
-
-    if st.button("Login"):
-        if username:
-            st.session_state['username'] = username
-            session_id = hex(hash(username))  # Generate unique session ID based on username
-            st.session_state['session_id'] = session_id
-            st.success(f"Welcome, {username}!")
-        else:
-            st.error("Please enter a username.")
-
-    # Perform actions based on the authenticated username
-    if st.session_state['username']:
-        st.write(f"Logged in as: {st.session_state['username']}")
-
-        if st.session_state['session_id'] not in st.session_state['messages']:
-            # Query SQL based on username (dummy function)
-            sql_query = query_database(st.session_state['username'])
-            st.session_state['messages'].append((st.session_state['session_id'], sql_query))
-
-        # Display messages for this session
-        st.write("Chat Messages:")
-        for session_id, message in st.session_state['messages']:
-            if session_id == st.session_state['session_id']:
-                st.write(message)
-
-    if st.button("Logout"):
-        session_id = st.session_state['session_id']
-        st.session_state['username'] = ""
-        st.session_state['session_id'] = None
-        st.session_state['messages'] = [(s_id, msg) for s_id, msg in st.session_state['messages'] if s_id != session_id]
-        st.success("Logged out successfully!")
-
-if __name__ == "__main__":
-    main()
-
-
+# Replace 'Test Data' with the path to your root folder
+root_folder = 'Test Data'
+process_folders(root_folder)
